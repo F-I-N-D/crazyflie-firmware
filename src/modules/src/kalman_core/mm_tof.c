@@ -48,6 +48,6 @@ void kalmanCoreUpdateWithTof(kalmanCoreData_t* this, tofMeasurement_t *tof)
     //h[KC_STATE_Z] = 1 / cosf(angle);
 
     // Scalar update
-    kalmanCoreScalarUpdate(this, &H, measuredDistance-predictedDistance, tof->stdDev);
+    kalmanCoreScalarUpdate(this, &H, (measuredDistance-predictedDistance)/10, tof->stdDev);
   }
 }

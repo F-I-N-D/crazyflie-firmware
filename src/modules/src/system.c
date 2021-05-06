@@ -220,9 +220,10 @@ void systemTask(void *arg)
   {
     selftestPassed = 1;
     systemStart();
-    soundSetEffect(SND_STARWARS);
+    soundSetEffect(SND_STARTUP);
     ledseqRun(&seq_alive);
     ledseqRun(&seq_testPassed);
+    soundSetEffect(SND_STARTUP);
   }
   else
   {
