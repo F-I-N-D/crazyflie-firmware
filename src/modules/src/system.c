@@ -223,6 +223,7 @@ void systemTask(void *arg)
     soundSetEffect(SND_STARTUP);
     ledseqRun(&seq_alive);
     ledseqRun(&seq_testPassed);
+    soundSetEffect(SND_STARTUP);
   }
   else
   {

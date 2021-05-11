@@ -306,6 +306,7 @@ static EffectCall effects[] = {
     [SND_BAT_FULL] = {.call = &melodyplayer, .melody = &chg_done},
     [SND_BAT_LOW] = {.call = &melodyplayer, .melody = &lowbatt},
     [SND_STARTUP] = {.call = &melodyplayer, .melody = &startup},
+    // [SND_STARTUP] = {.call = &melodyplayer, .melody = &starwars},
     [SND_CALIB] = {.call = &melodyplayer, .melody = &calibrated},
     {.call = &melodyplayer, .melody = &range_slow},
     {.call = &melodyplayer, .melody = &range_fast},
