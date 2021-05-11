@@ -215,8 +215,27 @@ bool motorsTest(void)
       vTaskDelay(M2T(MOTORS_TEST_DELAY_TIME_MS));
 #endif
     }
+    // if (motorMap[i]->drvType == BRUSHED)
+    // {
+    //   motorsBeep(MOTORS[i], true, testsound[i], (uint16_t)(MOTORS_TIM_BEEP_CLK_FREQ / A4)/ 10);
+    // }
+    // vTaskDelay(M2T(MOTORS_TEST_DELAY_TIME_MS*2));
+    // motorsBeep(MOTORS[0], false, 0, 0);
+    // motorsBeep(MOTORS[1], false, 0, 0);
+    // motorsBeep(MOTORS[2], false, 0, 0);
+    // motorsBeep(MOTORS[3], false, 0, 0);
+    
   }
-
+  motorsPlayTone(C4, MOTORS_TEST_DELAY_TIME_MS);
+  motorsPlayTone(B7, MOTORS_TEST_DELAY_TIME_MS);
+  motorsPlayTone(C4, MOTORS_TEST_DELAY_TIME_MS);
+  motorsPlayTone(B7, MOTORS_TEST_DELAY_TIME_MS);
+  vTaskDelay(M2T(MOTORS_TEST_DELAY_TIME_MS));
+  motorsPlayTone(C4, MOTORS_TEST_DELAY_TIME_MS);
+  vTaskDelay(M2T(MOTORS_TEST_DELAY_TIME_MS));
+  motorsPlayTone(C4, MOTORS_TEST_DELAY_TIME_MS);
+  vTaskDelay(M2T(MOTORS_TEST_DELAY_TIME_MS));
+  motorsPlayTone(C4, MOTORS_TEST_DELAY_TIME_MS);
   return isInit;
 }
 

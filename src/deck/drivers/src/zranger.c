@@ -50,6 +50,8 @@ static const float expPointB = 1.3f;
 static const float expStdB = 0.2f;    // STD at elevation expPointB [m]
 static float expCoeff;
 
+static float ldrData;
+
 #define RANGE_OUTLIER_LIMIT 3000 // the measured range is in [mm]
 
 static uint16_t range_last = 0;
@@ -101,7 +103,7 @@ void zRangerTask(void* arg)
 
     range_last = vl53l0xReadRangeContinuousMillimeters(&dev);
     rangeSet(rangeDown, range_last / 1000.0f);
-
+    ldrData = analogReadVoltage(DECK_GPIO_RX2);
     // check if range is feasible and push into the estimator
     // the sensor should not be able to measure >3 [m], and outliers typically
     // occur as >8 [m] measurements
@@ -127,4 +129,29 @@ DECK_DRIVER(zranger_deck);
 
 PARAM_GROUP_START(deck)
 PARAM_ADD(PARAM_UINT8 | PARAM_RONLY, bcZRanger, &isInit)
+PARAM_ADD(PARAM_FLOAT, data, &ldrData)
 PARAM_GROUP_STOP(deck)
+
+static const DeckDriver ldrDeck = {
+  .vid = 0,
+  .pid = 0,
+  .name = "LDR",
+  .usedGpio = DECK_USING_PB4 | DECK_USING_PB5 | DECK_USING_PB8,
+  .init = zRangerInit,
+};
+
+DECK_DRIVER(ldrDeck);
+PARAM_GROUP_START(LDRDeckGroup)
+PARAM_ADD(PARAM_FLOAT, data, &ldrData)
+PARAM_GROUP_STOP(LDRDeckGroup)
+
+
+// static const DeckDriver LDR = {
+//   .vid = 0,
+//   .pid = 0,
+//   .name = "ldr",
+//   .usedGpio = DECK_USING_PA3,
+//   .init = tfInit,
+// };
+
+// DECK_DRIVER(LDR);

@@ -31,11 +31,14 @@
 #include "range.h"
 #include "stabilizer_types.h"
 #include "estimator.h"
+#include "deck.h"
 
 static uint16_t ranges[RANGE_T_END] = {0,};
+static float ldrData;
 
 void rangeSet(rangeDirection_t direction, float range_m)
 {
+  ldrData = analogReadVoltage(DECK_GPIO_RX2);
   if (direction > (RANGE_T_END-1)) return;
 
   ranges[direction] = range_m * 1000;
@@ -43,12 +46,14 @@ void rangeSet(rangeDirection_t direction, float range_m)
 
 float rangeGet(rangeDirection_t direction)
 {
+  ldrData = analogReadVoltage(DECK_GPIO_RX2);
     if (direction > (RANGE_T_END-1)) return 0;
 
   return ranges[direction];
 }
 
 bool rangeEnqueueDownRangeInEstimator(float distance, float stdDev, uint32_t timeStamp) {
+  ldrData = analogReadVoltage(DECK_GPIO_RX2);
   tofMeasurement_t tofData;
   tofData.timestamp = timeStamp;
   tofData.distance = distance;
@@ -65,3 +70,8 @@ LOG_ADD(LOG_UINT16, left, &ranges[rangeLeft])
 LOG_ADD(LOG_UINT16, right, &ranges[rangeRight])
 LOG_ADD(LOG_UINT16, zrange, &ranges[rangeDown])
 LOG_GROUP_STOP(range)
+
+LOG_GROUP_START(ExternalSensors)
+LOG_ADD(LOG_FLOAT, LDR, &ldrData)
+
+LOG_GROUP_STOP(ExternalSensors)
