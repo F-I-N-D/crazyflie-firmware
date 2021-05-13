@@ -35,3 +35,12 @@ void externalSensorsTask(void* arg)
 LOG_GROUP_START(ExternalSensors)
 LOG_ADD(LOG_FLOAT, LDR, &ldrData)
 LOG_GROUP_STOP(ExternalSensors)
+
+static const DeckDriver externalSensors_deck = {
+    .vid = 0,
+    .pid = 0,
+    .name = "ddExternalSensors",
+    .usedGpio = DECK_USING_PA3,
+    .init = externalSensorsInit,
+};
+DECK_DRIVER(externalSensors_deck);
