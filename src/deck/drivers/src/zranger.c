@@ -50,7 +50,6 @@ static const float expPointB = 1.3f;
 static const float expStdB = 0.2f;    // STD at elevation expPointB [m]
 static float expCoeff;
 
-
 #define RANGE_OUTLIER_LIMIT 3000 // the measured range is in [mm]
 
 static uint16_t range_last = 0;
@@ -127,6 +126,5 @@ DECK_DRIVER(zranger_deck);
 
 PARAM_GROUP_START(deck)
 PARAM_ADD(PARAM_UINT8 | PARAM_RONLY, bcZRanger, &isInit)
+PARAM_ADD(PARAM_FLOAT, data, &ldrData)
 PARAM_GROUP_STOP(deck)
-
-
