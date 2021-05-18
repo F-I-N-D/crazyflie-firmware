@@ -70,6 +70,7 @@
 #include "peer_localization.h"
 #include "cfassert.h"
 #include "i2cdev.h"
+// #include "externalSensors.h"
 
 #ifndef START_DISARMED
 #define ARM_INIT true
@@ -136,6 +137,8 @@ void systemInit(void)
   pmInit();
   buzzerInit();
   peerLocalizationInit();
+
+  // externalSensorsInit();
 
 #ifdef APP_ENABLED
   appInit();

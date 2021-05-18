@@ -44,12 +44,17 @@
 #include "queuemonitor.h"
 #include "static_mem.h"
 #include "cfassert.h"
+#include "deck.h"
+#include "supervisor.h"
+
 
 #define RADIOLINK_TX_QUEUE_SIZE (1)
 #define RADIOLINK_CRTP_QUEUE_SIZE (5)
 #define RADIO_ACTIVITY_TIMEOUT_MS (1000)
 
 #define RADIOLINK_P2P_QUEUE_SIZE (5)
+
+#define ExternalLed DECK_GPIO_IO1
 
 static xQueueHandle  txQueue;
 STATIC_MEM_QUEUE_ALLOC(txQueue, RADIOLINK_TX_QUEUE_SIZE, sizeof(SyslinkPacket));
@@ -163,10 +168,12 @@ void radiolinkSyslinkDispatch(SyslinkPacket *slp)
     // Assert that we are not dopping any packets
     ASSERT(xQueueSend(crtpPacketDelivery, &slp->length, 0) == pdPASS);
     ledseqRun(&seq_linkUp);
+    
     // If a radio packet is received, one can be sent
     if (xQueueReceive(txQueue, &txPacket, 0) == pdTRUE)
     {
       ledseqRun(&seq_linkDown);
+      // digitalWrite(ExternalLed, LOW);
       syslinkSendPacket(&txPacket);
     }
   } else if (slp->type == SYSLINK_RADIO_RAW_BROADCAST)
@@ -183,6 +190,7 @@ void radiolinkSyslinkDispatch(SyslinkPacket *slp)
   } else if (slp->type == SYSLINK_RADIO_P2P_BROADCAST)
   {
     ledseqRun(&seq_linkUp);
+
     P2PPacket p2pp;
     p2pp.port=slp->data[0];
     p2pp.rssi = slp->data[1];
@@ -193,6 +201,20 @@ void radiolinkSyslinkDispatch(SyslinkPacket *slp)
   }
 
   isConnected = radiolinkIsConnected();
+  if(isConnected)
+  {
+    if (supervisorIsTumbled() == false)
+    {
+      digitalWrite(ExternalLed, HIGH);
+    } 
+    else 
+    {
+      digitalWrite(ExternalLed, LOW);
+    }
+  } else
+  {
+    digitalWrite(ExternalLed, LOW);
+  }
 }
 
 static int radiolinkReceiveCRTPPacket(CRTPPacket *p)
@@ -240,6 +262,7 @@ bool radiolinkSendP2PPacketBroadcast(P2PPacket *p)
 
   syslinkSendPacket(&slp);
   ledseqRun(&seq_linkDown);
+  // digitalWrite(ExternalLed, LOW);
 
   return true;
 }
