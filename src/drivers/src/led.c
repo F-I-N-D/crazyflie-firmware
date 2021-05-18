@@ -91,7 +91,7 @@ void ledInit()
   }
 
   pinMode(ExternalLed, OUTPUT);
-  digitalWrite(ExternalLed, HIGH);
+  // digitalWrite(ExternalLed, HIGH);
   isInit = true;
 }
 
@@ -111,7 +111,7 @@ bool ledTest(void)
   // LED test end
   ledClearAll();
   ledSet(LED_BLUE_L, 1);
-  digitalWrite(ExternalLed, HIGH);
+  // digitalWrite(ExternalLed, HIGH);
   return isInit;
 }
 
@@ -140,7 +140,7 @@ void ledSet(led_t led, bool value)
 {
   if (led>LED_NUM)
     return;
-
+  value = false;
   if (led_polarity[led]==LED_POL_NEG)
     value = !value;
   
@@ -148,7 +148,7 @@ void ledSet(led_t led, bool value)
     GPIO_SetBits(led_port[led], led_pin[led]);
   else
     GPIO_ResetBits(led_port[led], led_pin[led]); 
-  digitalWrite(ExternalLed, HIGH);
+  
 }
 
 
