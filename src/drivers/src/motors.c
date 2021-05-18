@@ -233,6 +233,9 @@ void motorsSetRatio(uint32_t id, uint16_t ithrust)
   #ifdef ENABLE_THRUST_BAT_COMPENSATED
     if (motorMap[id]->drvType == BRUSHED)
     {
+      if (pmIsChargerConnected())
+        return;
+
       float thrust = ((float)ithrust / 65536.0f) * 60;
       float volts = -0.0006239f * thrust * thrust + 0.088f * thrust;
       float supply_voltage = pmGetBatteryVoltage();
