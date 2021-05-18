@@ -150,5 +150,3 @@ void ledSet(led_t led, bool value)
     GPIO_ResetBits(led_port[led], led_pin[led]); 
   
 }
-
-

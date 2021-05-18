@@ -126,5 +126,4 @@ DECK_DRIVER(zranger_deck);
 
 PARAM_GROUP_START(deck)
 PARAM_ADD(PARAM_UINT8 | PARAM_RONLY, bcZRanger, &isInit)
-PARAM_ADD(PARAM_FLOAT, data, &ldrData)
 PARAM_GROUP_STOP(deck)
